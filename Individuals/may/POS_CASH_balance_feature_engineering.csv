@@ -1,0 +1,9 @@
+New Feature,Formulation,Meaning
+LATE_PAYMENT,LATE_PAYMENT = SK_DPD > 0,"Flags whether a payment is late (1 if overdue, 0 if on time)."
+POS_IS_DPD,POS_IS_DPD = SK_DPD > 0,"Indicates if the loan is in default (1 if overdue, 0 if not)."
+POS_IS_DPD_UNDER_120,POS_IS_DPD_UNDER_120 = 0 < SK_DPD < 120,Indicates if the loan is in default but overdue less than 120 days.
+POS_IS_DPD_OVER_120,POS_IS_DPD_OVER_120 = SK_DPD >= 120,Indicates if the loan is in default for more than 120 days.
+EXP_CNT_INSTALMENT,EXP_CNT_INSTALMENT = Previous month’s CNT_INSTALMENT smoothed over time with alpha=0.6,Exponentially weighted average of the number of installments paid so far.
+EXP_CNT_INSTALMENT_FUTURE,EXP_CNT_INSTALMENT_FUTURE = Future months’ CNT_INSTALMENT_FUTURE smoothed over time with alpha=0.6,Exponentially weighted average of the number of future installments remaining.
+SK_DPD_RATIO,SK_DPD_RATIO = SK_DPD / (SK_DPD_DEF + 0.00001),"The ratio of overdue days (SK_DPD) to total days overdue (SK_DPD_DEF), used to understand the severity of the overdue."
+TOTAL_TERM,TOTAL_TERM = CNT_INSTALMENT + CNT_INSTALMENT_FUTURE,"Total term of the loan, calculated by summing current and future installments."

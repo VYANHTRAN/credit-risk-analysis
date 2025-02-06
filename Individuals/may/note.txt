@@ -1,0 +1,59 @@
+1. load data
+2. make helper functions to display eda etc
+- check basic stats: num recods, nums features, data typpes, nanh
+- explore featues to the targer variable
+- cat: bar, pie
++ plot distribution, percentage of defaulters, target = 1
++ 
+- num: boz-plots, pdf, cds, violin -pplot
+-> drwaing  observation 
+--? note insights
+
+
+POS_CASH
+- ##### Description
+
+This table contains the Monthly Balance Snapshots of previous Point of Sales and Cash Loans that the applicant had with Home Credit Group. The table contains columns like the status of contract, the number of installments left, etc.
+
+- basic stats
+SK_ID_PREV ,"ID of previous credit in Home Credit related to loan in our sample. (One loan in our sample can have 0,1,2 or more previous loans in Home Credit)",
+SK_ID_CURR,ID of loan in our sample,
+MONTHS_BALANCE,"Month of balance relative to application date (-1 means the information to the freshest monthly snapshot, 0 means the information at application - often it will be the same as -1 as many banks are not updating the information to Credit Bureau regularly )",time only relative to the application
+CNT_INSTALMENT,Term of previous credit (can change over time),
+CNT_INSTALMENT_FUTURE,Installments left to pay on the previous credit,
+NAME_CONTRACT_STATUS,Contract status during the month,
+SK_DPD,DPD (days past due) during the month of previous credit,
+SK_DPD_DEF,DPD during the month with tolerance (debts with low loan amounts are ignored) of the previous credit,
+Visualizations
+- Univariate analysis
++ Categorical variables
++ Boxplot for numerical datas
+- Null Values
+- Outliers
+- Others problems
+- Correlation with Targert
+
+- Chuyển các pos_cash.loc[(pos_cash['CNT_INSTALMENT_FUTURE'] == 0) & (pos_cash['NAME_CONTRACT_STATUS'] == 'Active')] -> NaN hoặc Completed
+- các giá trị pos_cash[pos_cash['CNT_INSTALMENT'] < pos_cash['CNT_INSTALMENT_FUTURE']] -> drop hoặc chuyển về NaN
+- pos_cash.loc[pos_cash['SK_DPD'] > 2920] -> drop hoặc chuyển về NaN
+- pos_cash.loc[pos_cash['SK_DPD_DEF'] > 2920] -> drop hoặc chuyển về NaN
+- pos_cash.loc[(pos_cash['NAME_CONTRACT_STATUS'] == 'Completed') & (pos_cash['SK_DPD_DEF'] > 0)] -> drop 
+- pos_cash.loc[(pos_cash['NAME_CONTRACT_STATUS'] == 'Completed') & (pos_cash['CNT_INSTALMENT_FUTURE'] > 0)] -> drop 
+Mối quan hệ giữa SK_DPD và SK_DPD_DEF:
+Tương tự nhưng khác biệt về mức độ chấp nhận:
+SK_DPD_DEF có thể được coi là một biến thể của SK_DPD, nhưng với sự dung sai cho phép. Nếu một khoản vay bị trễ hạn, nhưng độ trễ không vượt qua một mức chấp nhận được (mức dung sai), giá trị của SK_DPD_DEF sẽ có thể bằng SK_DPD, hoặc sẽ bị giảm xuống 0 nếu khoản vay vẫn được coi là không có sự sai lệch đáng kể.
+Nếu một khoản vay bị quá hạn nghiêm trọng và không được phép dung sai, thì SK_DPD_DEF và SK_DPD sẽ có giá trị tương đương.
+Một số ví dụ:
+Trường hợp 1: Khoản vay trễ hạn 5 ngày và được xem là không quá nghiêm trọng.
+
+SK_DPD = 5
+SK_DPD_DEF = 5 (vì không có sự sai lệch lớn so với mức dung sai)
+Trường hợp 2: Khoản vay trễ hạn 15 ngày, nhưng do mức dung sai cho phép, có thể SK_DPD_DEF sẽ được tính lại thấp hơn hoặc bằng 0 nếu mức độ quá hạn không đáng kể.
+
+SK_DPD = 15
+SK_DPD_DEF = 0 (nếu số dư của khoản vay đủ nhỏ hoặc các yếu tố khác làm cho sự quá hạn không quá nghiêm trọng)
+Trường hợp 3: Khoản vay trễ hạn 50 ngày và mức độ quá hạn vượt quá dung sai cho phép.
+
+SK_DPD = 50
+SK_DPD_DEF = 50 (vì đây là quá hạn nghiêm trọng, không có dung sai cho phép)
+Nếu mối quan hệ giữa SK_DPD và SK_DPD_DEF của các giá trị không hợp lý -> drop hoặc chuyển về nan
