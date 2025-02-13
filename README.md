@@ -2,9 +2,7 @@
 
 ## Overview
 
-This repository contains the code and resources for the **Home Credit Default Risk** Kaggle competition. The competition aims to predict the probability of a customer defaulting on a loan using diverse datasets provided by Home Credit Group.
-
-[Kaggle Competition Link]([https://www.kaggle.com/competitions/home-credit-default-risk](https://www.kaggle.com/competitions/dseb-64-data-preparation-final-project))
+This repository contains the code and resources for the **Home Credit Default Risk** Kaggle competition. The competition aims to predict the probability of a customer defaulting on a loan using diverse datasets provided by Home Credit Group. 
 
 ## Problem Statement
 
